@@ -8,12 +8,16 @@ class Language(enum.Enum):
 
 class Activity:
 
-    def __init__(self, activity_id: int, language: Language, exercise_type: str, skill: str, level: int):
-        self.id: int = activity_id
+    def __init__(self, id: int, language: Language, exercise_type: str, skill: str, level: int):
+        self.id: int = id
         self.language: Language = language
         self.exercise_type: str = exercise_type
         self.skill: str = skill
         self.level: int = level
+
+    @classmethod
+    def from_json(cls, data):
+        return cls(**data)
 
 
 class Student:
