@@ -4,7 +4,7 @@ from lalilo.utils import ActivitiesManager
 
 if __name__ == '__main__':
     mgr = ActivitiesManager("../activities.json")
-    student = Student(Language.FR)
+    student = Student(Language.FR, True)
     # Perfect score on last activity
     # returns next of different type
     activity = StudentTrace(
@@ -43,3 +43,15 @@ if __name__ == '__main__':
     student.traces = [activity]
     suggested = mgr.get_most_relevant_activity(student)
     print(suggested.__dict__)
+
+    # Student without microphone
+    # reading activity not suggested
+    student.microphone = False
+    activity = StudentTrace(
+        activity_id=36374,
+        score=1
+    )
+    student.traces = [activity]
+    suggested = mgr.get_most_relevant_activity(student)
+    print(suggested.__dict__)
+    

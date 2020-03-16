@@ -32,15 +32,15 @@ class ActivitiesManager():
         last_activity: Activity = self.get_activity(
             student.traces[0].activity_id, student.language)
         if student.traces[0].score == 1.0:
-            return self.get_next_activity(last_activity, student.language)
+            return self.get_next_activity(last_activity, student.language, student.microphone)
         lower_level = self.get_lower_level_activity(
-            last_activity, student.language)
+            last_activity, student.language, student.microphone)
         if lower_level is not None:
             return lower_level
         return last_activity
 
-    def get_next_activity(self, activity: Activity, language: Language = None) -> Activity:
-        activities = self.activities_by_language[language.name]
+    def get_next_activity(self, activity: Activity, language: Language = None, microphone: bool = True) -> Activity:
+        activities = self.get_activities(microphone, language)
         # Find index of activity in list
         for i in range(len(activities)):
             a = activities[i]
@@ -57,9 +57,9 @@ class ActivitiesManager():
             return activities[activity_idx+1]
         return None
 
-    def get_lower_level_activity(self, activity: Activity, language: Language = None) -> Activity:
+    def get_lower_level_activity(self, activity: Activity, language: Language = None, microphone: bool = True) -> Activity:
         first_match = None
-        for a in self.get_activities(language):
+        for a in self.get_activities(microphone, language):
             if a.level < activity.level:
                 if first_match is None:
                     first_match = a
@@ -77,8 +77,8 @@ class ActivitiesManager():
                 return a
         return None
 
-    def get_activities(self, language: Language = None) -> List[Activity]:
-        if language is not None:
-            return self.activities_by_language[language.name]
-        else:
-            return self.activities
+    def get_activities(self, microphone: bool = True, language: Language = None) -> List[Activity]:
+        activities = self.activities_by_language[language.name] if language is not None else self.activities
+        if microphone:
+            return activities
+        return [a for a in activities if a.exercise_type != "reading"]

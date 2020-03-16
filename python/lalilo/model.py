@@ -22,9 +22,10 @@ class Activity:
 
 class Student:
 
-    def __init__(self, language: Language):
+    def __init__(self, language: Language, microphone: bool = False):
         self.language: Language = language
         self.traces: List[StudentTrace] = []
+        self.microphone = microphone
 
 
 class StudentTrace:

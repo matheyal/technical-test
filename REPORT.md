@@ -9,3 +9,7 @@ I used dedicated model classes to make it easier to manipulate the different obj
 ## Level 2
 
 Just added some conditions to the existing methods while trying to avoid re-iterating over the activities.
+
+## Level 3
+
+Added filter on microphone attribute when getting the list of activities. This way, every other call depending on this is affected by the rule.
